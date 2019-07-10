@@ -246,10 +246,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - AR session management
     private func loadRedPandaModel() -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "max", withExtension: "scn", subdirectory: "Assets.scnassets")!
+        let sceneURL = Bundle.main.url(forResource: "EC2", withExtension: "dae", subdirectory: "Assets.scnassets/models")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
-        
+        referenceNode.scale *= 0.1
         return referenceNode
     }
 }
