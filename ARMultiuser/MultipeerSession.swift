@@ -40,7 +40,7 @@ class MultipeerSession: NSObject {
         do {
             try session.send(data, toPeers: session.connectedPeers, with: .reliable)
         } catch {
-            print("error sending data to peers: \(error.localizedDescription)")
+            print("Error sending data to peers: \(error.localizedDescription)")
         }
     }
     

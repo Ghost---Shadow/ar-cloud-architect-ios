@@ -170,26 +170,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     func receivedData(_ data: Data, from peer: MCPeerID) {
         
         do {
-            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
-                // Run the session with the received world map.
-                let configuration = ARWorldTrackingConfiguration()
-                configuration.planeDetection = .horizontal
-                configuration.initialWorldMap = worldMap
-                sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-                
-                // Remember who provided the map for showing UI feedback.
-                mapProvider = peer
-            }
-            else
-            if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-                // Add anchor to the session, ARSCNView delegate adds visible content.
-                sceneView.session.add(anchor: anchor)
-            }
-            else {
-                print("unknown data recieved from \(peer)")
-            }
+            let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+            // Run the session with the received world map.
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.planeDetection = .horizontal
+            configuration.initialWorldMap = worldMap!
+            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            
+            // Remember who provided the map for showing UI feedback.
+            mapProvider = peer
+            
         } catch {
-            print("can't decode data recieved from \(peer)")
+            do{
+                let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data)
+                // Add anchor to the session, ARSCNView delegate adds visible content.
+                sceneView.session.add(anchor: anchor!)
+            } catch {
+                print("can't decode data recieved from \(peer)")
+                print("Error info: \(error)")
+            }
         }
     }
     
