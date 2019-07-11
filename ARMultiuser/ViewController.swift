@@ -169,8 +169,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     /// - Tag: ReceiveData
     func receivedData(_ data: Data, from peer: MCPeerID) {
         
-        do {
-            let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+        if let worldMap = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+            
             // Run the session with the received world map.
             let configuration = ARWorldTrackingConfiguration()
             configuration.planeDetection = .horizontal
@@ -179,16 +179,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             
             // Remember who provided the map for showing UI feedback.
             mapProvider = peer
+        }
+        else if let anchor = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
             
-        } catch {
-            do{
-                let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data)
-                // Add anchor to the session, ARSCNView delegate adds visible content.
-                sceneView.session.add(anchor: anchor!)
-            } catch {
-                print("can't decode data recieved from \(peer)")
-                print("Error info: \(error)")
-            }
+            // Add anchor (visible object) to the session
+            sceneView.session.add(anchor: anchor!)
+        }
+        else {
+            print("Can't decode data recieved from \(peer)")
         }
     }
     
