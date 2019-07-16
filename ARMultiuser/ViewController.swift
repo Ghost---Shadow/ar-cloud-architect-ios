@@ -21,6 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - View Life Cycle
     
+    var referenceNode: SCNReferenceNode! // View object
     var multipeerSession: MultipeerSession!
     
     override func viewDidLoad() {
@@ -190,6 +191,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         }
     }
     
+    @IBAction func onPinch(_ gestureRecognizer: UIPinchGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        guard referenceNode != nil else { return }
+        
+        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+            referenceNode.scale *= Float(gestureRecognizer.scale)
+            gestureRecognizer.scale = 1.0
+        }
+    }
     // MARK: - AR session management
     
     private func updateSessionInfoLabel(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
@@ -243,8 +253,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - AR session management
     private func loadRedPandaModel() -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "EC2", withExtension: "dae", subdirectory: "Assets.scnassets/models")!
-        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        let sceneURL = Bundle.main.url(forResource: "Temp_SampleScene1", withExtension: "dae", subdirectory: "Assets.scnassets/models")!
+        referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.scale *= 0.1
         return referenceNode
