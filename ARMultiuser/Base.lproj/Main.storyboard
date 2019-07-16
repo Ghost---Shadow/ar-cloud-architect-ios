@@ -23,6 +23,7 @@
                                 <connections>
                                     <outlet property="delegate" destination="7dh-A0-qGE" id="6YV-aS-dot"/>
                                     <outletCollection property="gestureRecognizers" destination="0gP-0b-mlo" appends="YES" id="Bjp-eC-9Fb"/>
+                                    <outletCollection property="gestureRecognizers" destination="kdY-Du-KLm" appends="YES" id="HPW-fl-OYY"/>
                                 </connections>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gad-7G-M17" customClass="RoundedButton" customModule="ARMultiuser" customModuleProvider="target">
@@ -118,6 +119,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvH-ud-t1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="kdY-Du-KLm">
+                    <connections>
+                        <action selector="onPinch:" destination="7dh-A0-qGE" id="a2e-x2-NnG"/>
+                    </connections>
+                </pinchGestureRecognizer>
                 <customObject id="dh1-aA-Oau" customClass="SCNScene"/>
                 <tapGestureRecognizer id="0gP-0b-mlo">
                     <connections>
