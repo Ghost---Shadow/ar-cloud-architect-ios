@@ -214,7 +214,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         referenceNode.eulerAngles.y = newAngleY
         
         if gestureRecognizer.state == .ended {
-            print(newAngleY)
             currentObjectAngleY = newAngleY
         }
     }
