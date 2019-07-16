@@ -23,7 +23,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var referenceNode: SCNReferenceNode! // View object
     var multipeerSession: MultipeerSession!
-    var currentObjectAngleY: Float = 0.0
+    var currentObjectRotation: Float = 0.0
+    var currentObjectTranslation: Float = 0.0
+    let speedConstant = (Float)(0.001)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -208,14 +210,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         guard referenceNode != nil else { return }
         
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
-        var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+        let translationX = (Float)(translation.x)
+        let translationY = (Float)(translation.y)
+
+        referenceNode.position += SCNVector3(translationX * speedConstant, 0, translationY * speedConstant)
+        gestureRecognizer.setTranslation( CGPoint.zero, in: gestureRecognizer.view)
+    }
+    
+    @IBAction func onRotate(_ gestureRecognizer: UIRotationGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        guard referenceNode != nil else { return }
         
-        newAngleY += currentObjectAngleY
-        referenceNode.eulerAngles.y = newAngleY
+        let rotation =  gestureRecognizer.rotation
+        var newRotation = (Float) (rotation)
+        
+        newRotation += currentObjectRotation
+        referenceNode.eulerAngles.y = newRotation
         
         if gestureRecognizer.state == .ended {
-            currentObjectAngleY = newAngleY
+            currentObjectRotation = newRotation
         }
+        
     }
     
     // MARK: - AR session management
