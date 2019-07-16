@@ -23,6 +23,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var referenceNode: SCNReferenceNode! // View object
     var multipeerSession: MultipeerSession!
+    var currentObjectRotation: Float = 0.0
+    var currentObjectTranslation: Float = 0.0
+    let speedConstant = (Float)(0.001)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,6 +203,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             gestureRecognizer.scale = 1.0
         }
     }
+    
+    
+    @IBAction func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        guard referenceNode != nil else { return }
+        
+        let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
+        let translationX = (Float)(translation.x)
+        let translationY = (Float)(translation.y)
+
+        referenceNode.position += SCNVector3(translationX * speedConstant, 0, translationY * speedConstant)
+        gestureRecognizer.setTranslation( CGPoint.zero, in: gestureRecognizer.view)
+    }
+    
+    @IBAction func onRotate(_ gestureRecognizer: UIRotationGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        guard referenceNode != nil else { return }
+        
+        let rotation =  gestureRecognizer.rotation
+        var newRotation = (Float) (rotation)
+        
+        newRotation += currentObjectRotation
+        referenceNode.eulerAngles.y = newRotation
+        
+        if gestureRecognizer.state == .ended {
+            currentObjectRotation = newRotation
+        }
+        
+    }
+    
     // MARK: - AR session management
     
     private func updateSessionInfoLabel(for frame: ARFrame, trackingState: ARCamera.TrackingState) {

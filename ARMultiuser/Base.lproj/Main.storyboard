@@ -24,6 +24,8 @@
                                     <outlet property="delegate" destination="7dh-A0-qGE" id="6YV-aS-dot"/>
                                     <outletCollection property="gestureRecognizers" destination="0gP-0b-mlo" appends="YES" id="Bjp-eC-9Fb"/>
                                     <outletCollection property="gestureRecognizers" destination="kdY-Du-KLm" appends="YES" id="HPW-fl-OYY"/>
+                                    <outletCollection property="gestureRecognizers" destination="Dqy-Jb-4D5" appends="YES" id="w2V-be-g04"/>
+                                    <outletCollection property="gestureRecognizers" destination="O9e-6S-b8m" appends="YES" id="gGp-G5-SYt"/>
                                 </connections>
                             </arscnView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gad-7G-M17" customClass="RoundedButton" customModule="ARMultiuser" customModuleProvider="target">
@@ -119,6 +121,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvH-ud-t1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <rotationGestureRecognizer id="O9e-6S-b8m">
+                    <connections>
+                        <action selector="onRotate:" destination="7dh-A0-qGE" id="877-rm-4Zp"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Dqy-Jb-4D5">
+                    <connections>
+                        <action selector="onPan:" destination="7dh-A0-qGE" id="VrY-Hv-FU5"/>
+                    </connections>
+                </panGestureRecognizer>
                 <pinchGestureRecognizer id="kdY-Du-KLm">
                     <connections>
                         <action selector="onPinch:" destination="7dh-A0-qGE" id="a2e-x2-NnG"/>
