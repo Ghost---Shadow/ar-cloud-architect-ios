@@ -23,6 +23,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var referenceNode: SCNReferenceNode! // View object
     var multipeerSession: MultipeerSession!
+    var currentObjectAngleY: Float = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,6 +201,24 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             gestureRecognizer.scale = 1.0
         }
     }
+    
+    
+    @IBAction func onPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        guard referenceNode != nil else { return }
+        
+        let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
+        var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+        
+        newAngleY += currentObjectAngleY
+        referenceNode.eulerAngles.y = newAngleY
+        
+        if gestureRecognizer.state == .ended {
+            print(newAngleY)
+            currentObjectAngleY = newAngleY
+        }
+    }
+    
     // MARK: - AR session management
     
     private func updateSessionInfoLabel(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
